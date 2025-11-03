@@ -1,0 +1,17 @@
+{
+  "name": "notes-application",
+  "version": "1.0.0",
+  "description": "a note taking application made as an assignment for a Backend developer role",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "author": "Harshil Vasani",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "mongoose": "^8.19.2"
+  }
+}
