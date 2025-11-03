@@ -23,6 +23,6 @@ const registerValidationRules = [
 ];
 
 router.post('/register', registerValidationRules, userController.registerUser);
-//router.post('/login', userController.login); 
+router.post('/login', userController.loginUser); 
 
 module.exports = router;

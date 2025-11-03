@@ -56,6 +56,45 @@ const registerUser=async(req,res)=>{
 }
 };
 
+const loginUser=async(req,res)=>{
+    const {email,password}=req.body;
+    if(!email || !password){
+        res.status(400).json({
+            success:false,
+            message:"All fields are mandatory"
+        });
+    }
+    try{
+    const user=await User.findOne({email}).select('+password');
+
+    if(user && (await bcrypt.compare(password,user.password))){
+        const accessToken=jwt.sign({
+            user:{
+                username:user.username,
+                email:user.email,
+                id:user.id,
+            },
+        },process.env.ACCESS_TOKEN_SECRET,
+    {expiresIn:"25m"});
+    res.status(200).json({
+        success:true,
+        message:"Login successfull",
+        accessToken:accessToken
+    });
+    }else{
+        res.status(401).json({
+            success:false,
+            message:"Login failed-email or password is not valid"
+        });
+    }}catch(error){
+        console.log(error);
+        res.status(500).json({
+        success:false,
+        message:"Something is wrong on our side please try again later"
+    });
+    }
+};
+
 module.exports={
-    registerUser
+    registerUser,loginUser
 };
