@@ -1,12 +1,11 @@
 const mongoose = require('mongoose');
 
 const noteSchema = new mongoose.Schema({
-    // Establish relationship to the User model
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true,
-        index: true // Indexing by user for faster queries
+        index: true 
     },
     title: {
         type: String,
@@ -20,7 +19,7 @@ const noteSchema = new mongoose.Schema({
     colorLabel: {
         type: String,
         trim: true,
-        default: '#FFFFFF' // Default white color
+        default: '#FFFFFF'
     },
     isPinned: {
         type: Boolean,

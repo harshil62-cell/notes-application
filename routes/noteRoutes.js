@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const { body } = require('express-validator');
+const { body,query } = require('express-validator');
 const noteController = require('../controllers/noteController');
-const authMiddleware = require('../middleware/authMiddleware'); // <-- Import the middleware
+const authMiddleware = require('../middleware/authMiddleware'); 
 
 
 const createNoteRules = [
@@ -13,7 +13,7 @@ const createNoteRules = [
         .notEmpty().withMessage('Content is required.')
         .trim(),
     body('colorLabel')
-        .optional() // This field is not required
+        .optional() 
         .trim()
         .isHexColor().withMessage('Color label must be a valid hex color (e.g., #FFFFFF)')
 ];
@@ -39,6 +39,13 @@ const updateNoteRules = [
         .isBoolean().withMessage('isArchived must be a boolean value (true or false)')
 ];
 
+const searchNoteRules = [
+    query('q')
+        .notEmpty().withMessage('Search query "q" is required.')
+        .trim()
+        .escape()
+];
+
 router.post(
     '/create', 
     authMiddleware, 
@@ -52,6 +59,21 @@ router.put(
     updateNoteRules,
     noteController.updateNote
 );
+
+router.delete(
+    '/:noteId',
+    authMiddleware,
+    noteController.deleteNote
+);
+
+router.get(
+    '/search',
+    authMiddleware,
+    searchNoteRules,
+    noteController.searchNotesByKeyword
+);
+
+router.get('/',authMiddleware,noteController.sendAllNotes);
 
 
 module.exports = router;
